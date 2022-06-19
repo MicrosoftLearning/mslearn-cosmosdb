@@ -51,7 +51,7 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
 1. Run the following command to open the code editor.
 
     ```bash
-    cd mslearn-cosmosdb/api-for-mongodb/01-create-mongodb-objects/node/
+    cd ./node/
     code App.js
     ```
 
