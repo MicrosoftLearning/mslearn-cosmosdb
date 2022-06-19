@@ -1,6 +1,5 @@
 # Update node to Version 14.0.0, since the MongoDB driver requires ver 10+
-wget https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | tr -d '\r'
-sleep 2
+wget https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh && cat install.sh && echo "Am I safe????"
 sh ./install.sh
 source ~/.nvm/nvm.sh
 nvm install 14.0.0
