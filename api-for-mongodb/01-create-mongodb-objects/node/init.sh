@@ -25,8 +25,3 @@ ConnectionString=$(az cosmosdb keys list --name $account --resource-group $Resou
 echo "***************** Connection String ***********************"
 echo $ConnectionString
 echo "***********************************************************"
-
-
-this install
-a 
-lf
