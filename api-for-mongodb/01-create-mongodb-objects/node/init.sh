@@ -1,14 +1,11 @@
 # Update node to Version 14.0.0, since the MongoDB driver requires ver 10+
-
 wget https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh
 sh ./install.sh
 source ~/.nvm/nvm.sh
-# nvm ls-remote
 nvm install 14.0.0
-# nvm --version
-# source ~/.profile
 npm install -g mongodb
 npm link mongodb
+
 
 # Create a MongoDB API account
 
@@ -25,8 +22,11 @@ az cosmosdb create --name $account --resource-group $ResourceGroup --kind MongoD
 
 #Displaying the Connection String
 ConnectionString=$(az cosmosdb keys list --name $account --resource-group $ResourceGroup --type connection-strings --query connectionStrings[0].connectionString --output tsv)
-echo "***************** Connection String ************************"
+echo "***************** Connection String ***********************"
 echo $ConnectionString
-echo "************************************************************"
+echo "***********************************************************"
 
 
+this install
+a 
+lf
