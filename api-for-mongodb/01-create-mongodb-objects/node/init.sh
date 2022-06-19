@@ -22,8 +22,8 @@ az cosmosdb create --name $account --resource-group $ResourceGroup --kind MongoD
 
 #Displaying the Connection String
 ConnectionString=$(az cosmosdb keys list --name $account --resource-group $ResourceGroup --type connection-strings --query connectionStrings[0].connectionString --output tsv)
-echo "***************** Connection String ***********************"
+echo "***************** Connection String ************************"
 echo $ConnectionString
-echo "***********************************************************"
+echo "************************************************************"
 
 
