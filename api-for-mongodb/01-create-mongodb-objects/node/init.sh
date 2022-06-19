@@ -1,6 +1,5 @@
 # Update node to Version 14.0.0, since the MongoDB driver requires ver 10+
-wget "https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh"
-source ~/.nvm/nvm.sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 nvm install 14.0.0
 npm install -g mongodb
 npm link mongodb
