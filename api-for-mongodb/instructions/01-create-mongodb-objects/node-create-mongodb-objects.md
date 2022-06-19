@@ -181,4 +181,4 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
     }
     ```
 
-As we should have noticed, this code is the same code we would run to create a database, collection and item on a MongoDB database. So programming for Azure Cosmos DB API for MongoDB should be transparent to you if you're already familiar with creating apps that connect to MongoDB.
+As you should have noticed, this code is the same code you would run to create a database, collection and item on a MongoDB database. So programming for Azure Cosmos DB API for MongoDB should be transparent to you if you're already familiar with creating apps that connect to MongoDB.
