@@ -3,10 +3,12 @@ wget https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh && cat 
 sleep 2
 sh ./install.sh
 source ~/.nvm/nvm.sh
+# nvm ls-remote
 nvm install 14.0.0
+# nvm --version
+# source ~/.profile
 npm install -g mongodb
 npm link mongodb
-
 
 # Create a MongoDB API account
 
