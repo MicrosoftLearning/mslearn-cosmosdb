@@ -55,7 +55,11 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
     code App.js
     ```
 
-1. Copy the following code to the App.js file. *Don't forget that you'll need to replace the url value for the connection string copied in step 2 of the previous section*. This connection string should look like mongodb://learn-account-cosmos-92903170:XvrarRd8LnqWNZiq3ahHXngbZoVRxVO192WahrcdsmHVivBGbRqnHx2cq0oMGnc0DUPAWpyGu7kt7APVH4nqXg==@learn-account-cosmos-92903170.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@learn-account-cosmos-92903170@.  This part of the code uses the MongoDB drivers, and uses the connection string to Azure Cosmos DB like you would normally use a connection string to any MongoDB database.  The code then defines and opens the connection to the Azure Cosmos DB Account.
+1. Copy the following code to the App.js file. *Don't forget that you'll need to replace the url value for the connection string copied in step 2 of the previous section*. This connection string should look like
+
+    mongodb://learn-account-cosmos-92903170:XvrarRd8LnqWNZiq3ahHXngbZoVRxVO192WahrcdsmHVivBGbRqnHx2cq0oMGnc0DUPAWpyGu7kt7APVH4nqXg==@learn-account-cosmos-92903170.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@learn-account-cosmos-92903170@.  
+
+    This part of the code uses the MongoDB drivers and uses the connection string to Azure Cosmos DB like you would normally use a connection string to any MongoDB server.  The code then defines and opens the connection to the Azure Cosmos DB account.
 
     ```JavaScript
     // Uses the MongoDB driver
