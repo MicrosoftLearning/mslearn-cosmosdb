@@ -47,7 +47,7 @@ It's now time to add our Java code to create a Database, a Collection and add an
     code ./src/main/java/com/fabrikam/App.java
     ```
 
-1. Copy the following code and *replace the existing content* from the App.js file. *Don't forget that you'll need to replace the uri value for the connection string copied in step 2 of the previous section*. This connection string should look like
+1. Copy the following code and *replace the existing content* from the App.java file. *Don't forget that you'll need to replace the uri value for the connection string copied in step 2 of the previous section*. This connection string should look like
 
     mongodb://learn-account-cosmos-92903170:XvrarRd8LnqWNZiq3ahHXngbZoVRxVO192WahrcdsmHVivBGbRqnHx2cq0oMGnc0DUPAWpyGu7kt7APVH4nqXg==@learn-account-cosmos-92903170.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@learn-account-cosmos-92903170@.  
 
@@ -150,7 +150,7 @@ It's now time to add our Java code to create a Database, a Collection and add an
                 // connect to the database "products"
                 MongoDatabase ProductDatabase = mongoClient.getDatabase("products");
     
-                // create a collection "documents" and add one item for "bread" 
+                // create a collection "products" and add one item for "bread" 
                 MongoCollection collection = ProductDatabase.getCollection("products");
     
                 collection.insertOne(new Document()
@@ -207,7 +207,7 @@ Let's create some code that will allow us to create a collection and define its 
     code ./src/main/java/com/fabrikam/App.java
     ```
 
-1. Copy the following code and *replace the existing content* from the App.js file. *Don't forget that you'll need to replace the uri value for the connection string copied in step 2 of the previous section*. This part of the code uses the MongoDB drivers and uses the connection string to Azure Cosmos DB like you would normally use a connection string to any MongoDB server.  The code then defines and opens the connection to the Azure Cosmos DB account.
+1. Copy the following code and *replace the existing content* from the App.java file. *Don't forget that you'll need to replace the uri value for the connection string copied in step 2 of the previous section*. This part of the code uses the MongoDB drivers and uses the connection string to Azure Cosmos DB like you would normally use a connection string to any MongoDB server.  The code then defines and opens the connection to the Azure Cosmos DB account.
 
     ```java
     package com.fabrikam;
@@ -246,7 +246,7 @@ Let's create some code that will allow us to create a collection and define its 
 1. So far it looks pretty much like the code in the previous section. In this step, we'll now take advantage of the extension commands and create a custom action.  This action will allow us to define the throughput and the sharding key of the collection, which will in turn give Azure Cosmos DB the parameters to use when creating the collection. Add the following to the script in the editor.
 
     ```java
-                // create the Employee collection with a throughput of 400 RUs and with EmployeeId as the sharding key
+                // create the Employee collection with a throughput of 1000 RUs and with EmployeeId as the sharding key
                 Document employeeCollectionDef = new Document();
                 employeeCollectionDef.append("customAction", "CreateCollection");
                 employeeCollectionDef.append("collection", "Employee");
@@ -316,7 +316,7 @@ Let's create some code that will allow us to create a collection and define its 
                 // connect to the database "HumanResources"
                 MongoDatabase EmployeeDatabase = mongoClient.getDatabase("HumanResources");
     
-                // create the Employee collection with a throughput of 400 RUs and with EmployeeId as the sharding key
+                // create the Employee collection with a throughput of 1000 RUs and with EmployeeId as the sharding key
                 Document employeeCollectionDef = new Document();
                 employeeCollectionDef.append("customAction", "CreateCollection");
                 employeeCollectionDef.append("collection", "Employee");
