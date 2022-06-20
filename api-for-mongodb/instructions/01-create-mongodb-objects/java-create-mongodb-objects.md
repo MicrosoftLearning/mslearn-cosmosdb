@@ -16,7 +16,7 @@ If you haven't already prepared the environment and the Azure Cosmos DB account 
 
     ```bash
     git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
-    cd mslearn-cosmosdb/api-for-mongodb/01-create-mongodb-objects/java
+    cd ~/mslearn-cosmosdb/api-for-mongodb/01-create-mongodb-objects/java
     # Download and install the Maven project, this will take a minute or two
     mvn archetype:generate -DgroupId=com.fabrikam -DartifactId=AzureApp -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
     # Replace the projects pom.xml file with the github one that has the MongoDB definition
@@ -28,11 +28,9 @@ If you haven't already prepared the environment and the Azure Cosmos DB account 
 
     > &#128221; Note that this bash script will create the Azure Cosmos DB API for MongoDB account. *It can take 5-10 minutes to create this account* so it might be a good time to get a cup of coffee or tea.
 
-1. When the bash *init.sh* file completes running, copy the ***Connection String*** returned somewhere, we'll need it in the next section. Additionally, you need to also review the JSON  returned by the account creation script that is located before the connection string.  *We'll need the ***account name*** and the ***resource group name***, copy those values somewhere.*
+1. When the bash *init.sh* file completes running, copy somewhere the ***Connection String***, ***Cosmos DB Account name*** and ***Resource Group name*** returned, we'll need them in the next section. You can also review the JSON  returned by the account creation script that is located before the connection string.  If you look somewhere in the middle of the JSON, you should see the property **"kind": "MongoDB"**.
 
-    1. Note the name of the account name will be something like **learn-account-cosmos-########-location**.  
-
-    1. If you look somewhere in the middle of the JSON, you should see the property **"kind": "MongoDB"**.
+    > &#128221; Note that  the ***Connection String***, ***Cosmos DB Account name*** and ***Resource Group name*** can also be found using the Azure Portal.
 
 ## Add the code to create the databases, collection and item to the App.java file
 
@@ -69,7 +67,7 @@ It's now time to add our Java code to create a Database, a Collection and add an
 
             // Remember to replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB 
             // account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-            // Or replace is with the connection string if you have it.
+            // Or replace it with the connection string if you have it.
             MongoClientURI uri = new MongoClientURI("mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@");
     
             MongoClient mongoClient = null;
@@ -79,7 +77,7 @@ It's now time to add our Java code to create a Database, a Collection and add an
     
     ```
 
-1. The next step connects to the **products** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection. Add the following to the script in the editor.
+1. The next step connects to the **products** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection or by using extension commands. Add the following to the script in the editor.
 
     ```java
                 // connect to the database "products"
@@ -87,7 +85,7 @@ It's now time to add our Java code to create a Database, a Collection and add an
     
     ```
 
-1. Next, we'll connect to the **documents** collection if it already exists, and then adds one item to the collection. Note that if the collection doesn't exist this code will only create the collection if it also performs an operation on that collection in the same connection (for example, like add an item to the collection). Add the following to the script in the editor.
+1. Next, we'll connect to the **documents** collection if it already exists, and then adds one item to the collection. Note that if the collection doesn't exist this code will only create the collection if it also performs an operation on that collection in the same connection (for example, like add an item to the collection) or by using extension commands. Add the following to the script in the editor.
 
     ```java
                 // create a collection "documents" and add one item for "bread" 
@@ -139,7 +137,7 @@ It's now time to add our Java code to create a Database, a Collection and add an
 
             // Remember to replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB 
             // account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-            // Or replace is with the connection string if you have it.
+            // Or replace it with the connection string if you have it.
             MongoClientURI uri = new MongoClientURI("mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@");
     
             MongoClient mongoClient = null;
@@ -225,7 +223,7 @@ Let's create some code that will allow us to create a collection and define its 
 
             // Remember to replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB 
             // account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-            // Or replace is with the connection string if you have it.
+            // Or replace it with the connection string if you have it.
             MongoClientURI uri = new MongoClientURI("mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@");
     
             MongoClient mongoClient = null;
@@ -235,11 +233,11 @@ Let's create some code that will allow us to create a collection and define its 
     
     ```
 
-1. The next step connects to the **employees** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection. Add the following to the script in the editor.
+1. The next step connects to the **employees** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection or by using extension commands. Add the following to the script in the editor.
 
     ```java
-                // connect to the database "employees"
-                MongoDatabase EmployeeDatabase = mongoClient.getDatabase("employees");
+                // connect to the database "HumanResources"
+                MongoDatabase EmployeeDatabase = mongoClient.getDatabase("HumanResources");
     
     ```
 
@@ -305,7 +303,7 @@ Let's create some code that will allow us to create a collection and define its 
 
             // Remember to replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB 
             // account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-            // Or replace is with the connection string if you have it.
+            // Or replace it with the connection string if you have it.
             MongoClientURI uri = new MongoClientURI("mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@");
     
             MongoClient mongoClient = null;
