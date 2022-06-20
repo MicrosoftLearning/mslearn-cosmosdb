@@ -6,7 +6,7 @@ lab:
 
 # Create MongoDB app using ***Java*** Azure Cosmos DB API for MongoDB
 
-In this exercise, you'll create an Azure Cosmos DB API for MongoDB account, a database, a collection and add a couple of items to the collection. You'll notice that this code will be identical to how you would connect to any MongoDB database. To use the Java engine, we'll create and compile an App running *Maven*. You'll then create a collection using extension commands that allow you to define the throughput in Request Units/sec (RUs) for the collection.
+In this exercise, you'll create an Azure Cosmos DB API for MongoDB account, a database, a collection and add a couple of items to the collection. You'll notice that this code will be identical to how you would connect to any MongoDB database. To use the Java engine, we'll create and compile an App running *Maven*. You'll then create a collection using extension commands that allow you to define the throughput in Request Units (RUs) for the collection.
 
 ## Prepare your development environment
 
