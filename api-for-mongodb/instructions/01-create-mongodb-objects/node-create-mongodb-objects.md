@@ -10,7 +10,7 @@ In this exercise, you'll create an Azure Cosmos DB API for MongoDB account, a da
 
 ## Prepare your development environment
 
-If you haven't already prepared the Azure Cosmos DB account where you're working on this lab, follow these steps to do so. Otherwise, go to the **Create Collection and items** section.
+If you haven't already prepared the Azure Cosmos DB account and environment where you're working on this lab, follow these steps to do so. Otherwise, go to the **Add the code to create the databases, collection and item to the App.js file** section.
 
 1. In Azure Cloud Shell, copy and paste the following commands.
 
