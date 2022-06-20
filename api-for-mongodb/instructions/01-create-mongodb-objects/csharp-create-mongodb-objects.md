@@ -301,7 +301,7 @@ Let's create some code that will allow us to create a collection and define its 
         Console.WriteLine ("Id: {0}, EmployeeId: {1}, email: \'{2}\', name: \'{3}\'", EmployeeFound.Id, EmployeeFound.EmployeeId, EmployeeFound.email, EmployeeFound.name);
       }
     }
-        ```
+    ```
 
 1. Let's go ahead and save the C# program.  Select on the Upper right hand corner of the code editor and select **Save** (or Ctrl+S). Now select **Close Editor** (or Ctrl+Q) to go back to the Shell.
 
