@@ -10,7 +10,7 @@ In this exercise, you'll create an Azure Cosmos DB API for MongoDB account, a da
 
 ## Prepare your development environment
 
-If you haven't already prepared the Azure Cosmos DB database where you're working on this lab, follow these steps to do so. Otherwise, go to the **Create Collection and items** section.
+If you haven't already prepared the Azure Cosmos DB account where you're working on this lab, follow these steps to do so. Otherwise, go to the **Create Collection and items** section.
 
 1. In Azure Cloud Shell, copy and paste the following commands.
 
@@ -38,7 +38,7 @@ If you haven't already prepared the Azure Cosmos DB database where you're workin
 
 1. When the bash *init.sh* file completes running, copy somewhere the ***Connection String*** returned, we'll need it in the next section. You can also review the JSON  returned by the account creation script that is located before the connection string.
 
-    1. Note the name of the account will be something like **learn-account-cosmos-########-location**.  
+    1. Note the name of the account name will be something like **learn-account-cosmos-########-location**.  
 
     1. If you look somewhere in the middle of the JSON, you should see the property **"kind": "MongoDB"**.
 
@@ -87,7 +87,7 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
         
     ```
 
-1. The next step connects to the **products** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection. Add the following script to the editor.
+1. The next step connects to the **products** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection. Add the following to the script in the editor.
 
     ```javascript
       // connect to the database "products"
@@ -95,7 +95,7 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
     
     ```
 
-1. Next, we'll connect to the **documents** collection if it already exists, and then adds one item to the collection. Note that if the collection doesn't exist this code will only create the collection if it also performs an operation on that collection in the same connection (for example, like add an item to the collection). Add the following script to the editor.
+1. Next, we'll connect to the **documents** collection if it already exists, and then adds one item to the collection. Note that if the collection doesn't exist this code will only create the collection if it also performs an operation on that collection in the same connection (for example, like add an item to the collection). Add the following to the script in the editor.
 
     ```javascript
       // create a collection "documents" and add one item for "bread"
@@ -104,7 +104,7 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
     
     ```
 
-1. Lets now search for the item we just inserted and display it to the shell. Add the following script to the editor.
+1. Lets now search for the item we just inserted and display it to the shell. Add the following to the script in the editor.
 
     ```javascript
       // return data where ProductId = 1
@@ -113,7 +113,7 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
     
     ```
 
-1. Finally let's close the connection and call the *main* function to run it. Add the following script to the editor.
+1. Finally let's close the connection and call the *main* function to run it. Add the following to the script in the editor.
 
     ```javascript
       // close the connection
@@ -167,7 +167,7 @@ It's now time to add our JavaScript code to create a Database, a Collection and 
     main();
     ```
 
-1. Let's go ahead and save the JavaScript program.  Select on the Upper right hand corner of the code editor and select **Save**. Now select **Close Editor** to go back to the Shell.
+1. Let's go ahead and save the JavaScript program.  Select on the Upper right hand corner of the code editor and select **Save** (or Ctrl+S). Now select **Close Editor** (or Ctrl+Q) to go back to the Shell.
 
 1. Let's now run the JavaScript App with the following command.
 
