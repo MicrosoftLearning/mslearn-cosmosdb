@@ -354,7 +354,7 @@ Let's create some code that will allow us to create a collection and define its 
 
 1. Let's go ahead and save the Java program.  Select on the Upper right hand corner of the code editor and select **Save** (or Ctrl+S). Now select **Close Editor** (or Ctrl+Q) to go back to the Shell.
 
-1. Let's now run the JavaScript App with the following command.
+1. Let's now run the Java App with the following command.
 
     ```bash
     mvn clean compile exec:java
