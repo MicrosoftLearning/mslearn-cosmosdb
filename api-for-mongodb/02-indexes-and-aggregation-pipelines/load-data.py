@@ -24,11 +24,12 @@ def create_databases(databasesMetaData, CosmosDBClient, databaseArgument, collec
             maxthroughput = 0
 
             databasename = database['name']
-            print(databasename)
 
             if databaseArgument != '':
                 if databasename != databaseArgument:
                     continue
+
+            print(databasename)
 
             if 'maxThroughput' in database:
                 maxthroughput = database['maxThroughput']
@@ -54,12 +55,13 @@ def create_collections(CosmosDBDatabase, collections,DatabaseName, collectionArg
         shardKey=''
 
         collectionname = collection["name"]
-        print(collectionname)
 
         if collectionArgument != '':
             if collectionname != collectionArgument:
                 continue
                 
+        print(collectionname)
+
         CollectionList = CosmosDBDatabase.list_collection_names()
 
         if collectionname not in CollectionList:
@@ -82,6 +84,7 @@ def load_collection(CosmosDBDatabase, CollectionName,DatabaseName):
     CosmosDBCollection = CosmosDBDatabase[CollectionName]
 
     CosmosDBCollection.insert_many(CollectionFile)
+    print (CollectionFileName)
 
 
 def main(args):
