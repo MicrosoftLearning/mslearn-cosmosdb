@@ -84,8 +84,6 @@ def load_collection(CosmosDBDatabase, CollectionName,DatabaseName):
     CosmosDBCollection = CosmosDBDatabase[CollectionName]
 
     CosmosDBCollection.insert_many(CollectionFile)
-    print (CollectionFileName)
-
 
 def main(args):
 
