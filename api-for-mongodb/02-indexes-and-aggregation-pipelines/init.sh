@@ -1,6 +1,3 @@
-# Download Git
-git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
-
 # Unzip collections
 cd ~/mslearn-cosmosdb/data
 unzip cosmic-works.zip
