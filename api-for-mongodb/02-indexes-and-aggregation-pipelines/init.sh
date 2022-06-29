@@ -11,7 +11,7 @@ cd ~/mslearn-cosmosdb/api-for-mongodb/02-indexes-and-aggregation-pipelines
 
 # Variable block
 ResourceGroup=$(az group list --query [].name --output tsv)
-ServerVersion="4.2"
+ServerVersion="4.0"
 let "randomIdentifier=$RANDOM*$RANDOM"
 location=$(az group list --query [].location --output tsv)
 account="learn-account-cosmos-$randomIdentifier"
