@@ -1,300 +1,271 @@
 ---
 lab:
-    title: 'Create MongoDB app using ***Python*** Azure Cosmos DB API for MongoDB'
-    module: 'Module 1 - Get Started with Azure Cosmos DB API for MongoDB '
+    title: 'Create MongoDB app using the Azure Cosmos DB API for MongoDB'
+    module: 'Module 2 - Design an Azure Cosmos DB API for MongoDB database'
 ---
 
-# Create MongoDB app using ***Python*** Azure Cosmos DB API for MongoDB
+## Indexes and pipeline aggregations
 
-In this exercise, you'll create an Azure Cosmos DB API for MongoDB account, a database, a collection and add a couple of items to the collection. You'll notice that this code will be identical to how you would connect to any MongoDB database.  You'll then create a collection using extension commands that allow you to define the throughput in Request Units/sec (RUs) for the collection.
+In this exercise, we'll use the Azure portal to see some examples on how indexes influence the cost of our queries.  We'll use both the *db.collection.find* and *db.collection.aggregation* functions.  Let's start by using the Azure portal to create our Azure Cosmos DB API for MongoDB account if it doesn't already exist.
 
-## Prepare your development environment
+### Prepare your development environment
 
-If you haven't already prepared the Azure Cosmos DB account and environment where you're working on this lab, follow these steps to do so. Otherwise, go to the **Add the code to create the databases, collection and item to the App.py file** section.
+If you haven't already prepared the Azure Cosmos DB account and environment where you're working on this lab, follow these steps to do so. Otherwise, go to the **Indexes and their impact** section.
 
 1. In Azure Cloud Shell, copy and paste the following commands.
 
     ```bash
+    # Create an Azure Cosmos DB API for MongoDB account and add the customer collection
     git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
-    cd ~/mslearn-cosmosdb/data
-    unzip cosmic-works.zip
-    mv cosmic-works-v1 database-v1
-    mv cosmic-works-v2 database-v2
-    mv cosmic-works-v3 database-v3
-    mv cosmic-works-v4 database-v4
-    cd ~/mslearn-cosmosdb/api-for-mongodb/02-models-shard-keys-and-indexes
-    # Install the MongoDB Python drivers
-    python -m pip install pymongo
-    # Create an Azure Cosmos DB API for MongoDB account
-    bash ../init.sh
+    cd ~/mslearn-cosmosdb/api-for-mongodb/02-indexes-and-aggregation-pipelines
+    bash init.sh
     ```
 
-    > &#128221; Note that this bash script will create the Azure Cosmos DB API for MongoDB account. *It can take 5-10 minutes to create this account* so it might be a good time to get a cup of coffee or tea. 
+    > &#128221; Note that this bash script will create the Azure Cosmos DB API for MongoDB account and copy the customer collection into that account. *It can take 5-10 minutes to create this account* so it might be a good time to get a cup of coffee or tea.
 
-1. When the bash *init.sh* file completes running, copy somewhere the ***Connection String***, ***Cosmos DB Account name*** and ***Resource Group name*** returned, we'll need them in the next section. You can also review the JSON  returned by the account creation script that is located before the connection string.  If you look somewhere in the middle of the JSON, you should see the property **"kind": "MongoDB"**.
+1. Since we'll be using the Azure portal with the Sandbox, don't forget to switch the directory on the Azure portal to use the Resource Group created by the Sandbox.
 
-    > &#128221; Note that  the ***Connection String***, ***Cosmos DB Account name*** and ***Resource Group name*** can also be found using the Azure Portal.
+1. ***Don't close out of the sandbox***. On a *different* browser window or *tab*, sign in to the Azure portal using the same account you connected to the sandbox with.
 
-## Add the code to create the databases, collection and item to the App.py file
+1. On the upper right hand corner of the Azure portal, verify the directory you're logged in to, if it points to the **Default Directory** or something different than the **Microsoft Learn Sandbox** directory continue to the next step, otherwise continue to the next section.
 
-It's now time to add our Python code to create a Database, a Collection and add an item to the collection.
+1. Select the user icon on the upper right hand corner besides your sign-in name.  Select **Switch Directory**.
+    [![Diagram showing the switch directory option](../media/5-switch-directory-login.png)](../media/5-switch-directory-login.png#lightbox)
 
-1. In not already opened, open the Azure Cloud Shell.
+1. Select the **Switch** button.  You'll notice in the upper right hand corner that you should now be in the Microsoft Learn Sandbox directory.
 
-1. Run the following command to open the code editor.
+    [![Diagram showing the switch directory option](../media/5-switch-directory.png)](../media/5-switch-directory.png#lightbox)
 
-    ```bash
-    cd ~/mslearn-cosmosdb/api-for-mongodb/01-create-mongodb-objects/python
-    code App.py
+Let's continue with the lab.  
+
+### Indexes and their impact
+
+We'll use the Azure portal to run a few queries and review their impact.
+
+1. On the Azure portal, go to your Azure Cosmos DB API for Mongo DB account.
+
+1. Under Data Explorer, select the **database-v1** database and the **customer** collection.
+
+1. On the right hand side of the collection menu, select ***>_ New Shell***.
+
+1. Time to run a simple query to return all the documents for customers with the last name ***Benson***. To do so, on the Shell prompt run the query below.
+
+    ```javascript
+    db.customer.find({lastName: "Benson"})
     ```
 
-1. Copy the following code to the App.js file. *Don't forget that you'll need to replace the uri value for the connection string copied in step 2 of the previous section*. This connection string should look like
+    This query will first return a message like Operation consumed **337.38 RUs**, you might get a slightly different cost value. Then it should have returned the following documents.
 
-    mongodb://learn-account-cosmos-92903170:XvrarRd8LnqWNZiq3ahHXngbZoVRxVO192WahrcdsmHVivBGbRqnHx2cq0oMGnc0DUPAWpyGu7kt7APVH4nqXg==@learn-account-cosmos-92903170.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@learn-account-cosmos-92903170@.  
+    ```javascript
+    [
+      {
+        _id: ObjectId("62b9125f0a967b00dc936a3f"),
+        id: '277EB18F-2886-4E2A-BF92-C3A8A87F27FC',
+        title: 'Ms.',
+        firstName: 'Edna',
+        lastName: 'Benson',
+        emailAddress: 'edna0@adventure-works.com',
+        phoneNumber: '789-555-0189',
+        creationDate: '2013-07-31T00:00:00'
+      },
+      {
+        _id: ObjectId("62b9125f0a967b00dc9391ae"),
+        id: '45758735-8AB4-4B4E-B161-26F073FB2CA4',
+        title: 'Mr.',
+        firstName: 'Max',
+        lastName: 'Benson',
+        emailAddress: 'max0@adventure-works.com',
+        phoneNumber: '599-555-0160',
+        creationDate: '2011-10-01T00:00:00'
+      },
+      {
+        _id: ObjectId("62b9125f0a967b00dc939852"),
+        id: 'A1AC6260-F902-472D-8CB3-C9955635DABF',
+        title: 'Mr.',
+        firstName: 'Payton',
+        lastName: 'Benson',
+        emailAddress: 'payton0@adventure-works.com',
+        phoneNumber: '528-555-0183',
+        creationDate: '2011-10-01T00:00:00'
+      }
+    ]
+    ```
 
-    This part of the code uses the MongoDB drivers and uses the connection string to Azure Cosmos DB like you would normally use a connection string to any MongoDB server.  The code then defines and opens the connection to the Azure Cosmos DB account.
+    This cost shouldn't look right, we currently have 19,119 documents in this collection, but this query should still have its cost in RUs in the single digits.
 
-    ```python
-    # Use the MongoDB drivers
-    import pymongo
+1. Let's make sure we have an index on the **lastName** field. On the database tree, expand the ***database-v1*** database then the ***customer*** collection and select **Settings**.
+
+1. Select the ***Indexing Policy*** tab.
+
+1. Notice that there's only one index for the ***_id*** field, which is always created for any collection in an Azure Cosmos DB API for MongoDB collection, but there are no extra indexes.  The lack of indexes perfectly explains our problem.  Because we have no index for the ***lastName*** column, we're scanning all the documents to find the three documents that met our criteria. Let's go ahead and add the needed index.
+
+1. To add the index, just put the column name, **lastName** under the *Definition* column and select **Single Field** from the *Type* pulldown. Now select ***Save*** under the menu to create the index. You could also create multiple Single Field indexes at the same time.
+
+    > &#128221; Once you select ***Save*** you can scroll up on the Indexing Policy tab to see the progress of the index creation. It should take 5-20 seconds to create this index. Note that for very large indexes this could take from many minutes to hours.
+
+1. Let's go back to the Shell, if the connection timed out, just open a New Shell.
+
+1. Rerun the query to return all customers with the last name ***Benson***.
+
+    ```javascript
+    db.customer.find({lastName: "Benson"})
+    ```
+
+1. Now we should see a huge difference in cost. While this query returned the expected three documents we should have seen a message similar to **Operations consumed 4.98 RUs**, you might get a slightly different cost value.
+
+1. Let's try one more thing. Let's look for all the customers who were created after 2011. We already know the performance will be very bad.
+
+    ```javascript
+    db.customer.find({creationDate: {$gte : "2012-01-01T00:00:00Z"}})
+        
+    ```
+
+    As expected, this cost us **524.73 RUs**.
+
+1. Let's go ahead and create the index on the **creationDate** field as a **Single Field** type. And when it completed creating it, let's rerun the query.
+
+    The results will still be in the hundreds of RUs so the query would still be very costly.  Let's find out why?
+
+### Aggregated pipelines
+
+So how many documents were returned by the previous query? For that we need a little more complex query. Let's use an aggregation pipeline to do the count.  First we need to create a match to our condition of our aggregation, then we need to count how many documents are returned.
+
+1. The following aggregation should give us what we want. Our match condition is the same as the condition in our last query. We would then group it by the ***_id*** key since it's a unique column so it will give us the number of unique documents. In the group pipeline, we'll sum the number of documents meeting the filter. Finally we'll only project the *CountNumberOfDocuments* field and suppress the *_id* column that isn't relevant to our desired results.
+
+    ```javascript
+    db.customer.aggregate(
+        [
+            {
+                $match: {creationDate: {$gte : "2012-01-01T00:00:00Z"}}
+            },
+            {
+                $group: 
+                {
+                    _id: "$_id_"
+                    , CountNumberOfDocuments: {$sum:1}
+                }
+            },
+            {
+                $project:
+                {
+                    _id:0
+                    , CountNumberOfDocuments: 1
+                }
+            }
+        ]
+    )
+    ```
+
+    Note a couple of things about this execution. First, it was really expensive, and second, the reason why our query's performance wasn't much different for that query is that we almost returned as many documents as there were in the collection.
+
+1. If you change both queries to the customers that were created after 2014 (for example $gte 1/1/2015) both queries should be very cheap in cost since there are only 10 documents created after that date. Go ahead and do that test.
+
+1. Lets do one final query. For this query, we would like the documents that are defined by the  following criteria. Which of our customer accounts have an international area code *1 (11)*. Additionally which of those accounts were opened after 2013 and has a title in their name (for example, Mr, Mrs, Ms., etc.). The documents should contain all original columns except for the *_id* column. The documents should also contain a field for how many days since of January 1, 2022 the customer accounts have been created.
+
+1. Start by creating all the necessary indexes for the fields *title*, *phoneNumber* and *creationDate*. Go ahead and create those indexes now.
+
+1. Let's look at our different pipelines and then we'll put them all together.
+
+    First let's look at our match filters. We need a filter for the phone number, a filter for the creation date and a filter for the title.
+
+    ```javascript
+    [
+        {
+            $match:
+            {
+                creationDate: {$gte: "2014-01-01T00:00:00Z"}
+                , $phoneNumber:{$regex: "1 \\(11\\)"}
+                , title: {$ne:""}
+            }
+        }
+    ]
+    ```
+
+    Next, we could use the group pipeline to calculate the number of days the account had been opened by *1/1/2022*. But since we aren't really grouping by any column in particular, and we just want to calculate the date difference for every account found, we can use the project pipeline instead.
+
+    ```javascript
+    [
+        {
+            $project:
+            {
+                title:1
+                , firstName:1
+                , lastName:1
+                , emailAddress:1
+                , phoneNumber:1
+                , creationDate:1,
+                "NumberOfDays":{$toInt: {$divide:[{"$subtract":[ {$toDate:"2022-01-01T00:00:00Z"},{$toDate:"$creationDate"}]},1000*60*60*24]}}
+                , _id:0
+            }
+        }
+    ]
+    ```
+
+    Noticed how I divided by *1000x60x60x24* that is because subtraction of dates is in milliseconds. Also noticed how I'm not retuning the **_id** field.  
+
+1. Let's put it all together. Run the following command.
+
+    ```javascript
     
-    
-    def main():
-        # Replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB
-        # account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-        # Or replace it with the connection string if you have it.
-        uri = "mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@"
-        
-        # We use the "MongoClient" method and the "uri" value to connect to the account 
-        client = pymongo.MongoClient(uri)
-        
-        ```
-
-1. The next step connects to the **products** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection or by using extension commands. Add the following to the script in the editor.
-
-    ```python
-        # connect to the database "products"
-        ProductDatabase = client["products"]
-        
+    db.customer.aggregate(
+        [
+            {
+                $match:
+                {
+                    creationDate: {$gte: "2014-01-01T00:00:00Z"}
+                    , phoneNumber: {$regex: "1 \\(11\\)"}
+                    , title: {$ne:""}
+                }
+            },
+            {
+                $project:
+                {
+                    title:1
+                    , firstName:1
+                    , lastName:1
+                    , emailAddress:1
+                    , phoneNumber:1
+                    , creationDate:1,
+                    "NumberOfDays":{$toInt: {$divide:[{"$subtract":[ {$toDate:"2022-01-01T00:00:00Z"},{$toDate:"$creationDate"}]},1000*60*60*24]}}
+                    , _id:0
+                }
+            }
+        ]
+    )
     ```
 
-1. Next, we'll connect to the **documents** collection if it already exists, and then adds one item to the collection. Note that if the collection doesn't exist this code will only create the collection if it also performs an operation on that collection in the same connection (for example, like add an item to the collection) or by using extension commands. Add the following to the script in the editor.
+    This should return the following three rows. If we hadn't created the three indexes, our cost would have been around 460 RUs, but with all our indexes our cost will be closer to 7 RUs.
 
-    ```python
-        # create a collection "products" and add one item for "bread"
-        collection = ProductDatabase["products"]
-        collection.insert_one({ "ProductId": 1, "name": "bread" })
-        
+    ```javascript
+    [
+      {
+        title: 'Mr.',
+        firstName: 'Jay',
+        lastName: 'Fluegel',
+        emailAddress: 'jay2@adventure-works.com',
+        phoneNumber: '1 (11) 500 555-0119',
+        creationDate: '2014-05-01T00:00:00',
+        NumberOfDays: 2802
+      },
+      {
+        title: 'Mrs.',
+        firstName: 'Barbara',
+        lastName: 'Nara',
+        emailAddress: 'barbara45@adventure-works.com',
+        phoneNumber: '1 (11) 500 555-0144',
+        creationDate: '2014-01-08T00:00:00',
+        NumberOfDays: 2915
+      },
+      {
+        title: 'Sra.',
+        firstName: 'Pilar',
+        lastName: 'Ackerman',
+        emailAddress: 'pilar1@adventure-works.com',
+        phoneNumber: '1 (11) 500 555-0132',
+        creationDate: '2015-04-15T16:33:33',
+        NumberOfDays: 2452
+      }
+    ]
     ```
 
-1. Lets now search for the item we just inserted and display it to the shell. Add the following to the script in the editor.
-
-    ```python
-        # return data where ProductId = 1
-        Product_1 = collection.find_one({"ProductId": 1})
-    
-        print(Product_1)
-    
-    ```
-
-1. Finally let's close the connection and call the *main* function to run it. Add the following to the script in the editor.
-
-    ```python
-        # close the connection
-        client.close()
-
-    if __name__ == '__main__':
-        main()
-    ```
-
-1. The script should look like this:
-
-    ```python
-    # Use the MongoDB drivers
-    import pymongo
-    
-    def main():
-        # Replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB
-        # account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-        # Or replace it with the connection string if you have it.
-        uri = "mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@"
-        
-        # We use the "MongoClient" method and the "uri" value to connect to the account 
-        client = pymongo.MongoClient(uri)
-        
-        # connect to the database "products"
-        ProductDatabase = client["products"]
-        
-        # create a collection "products" and add one item for "bread"
-        collection = ProductDatabase["products"]
-        collection.insert_one({ "ProductId": 1, "name": "bread" })
-        
-        # return data where ProductId = 1
-        Product_1 = collection.find_one({"ProductId": 1})
-        
-        print(Product_1)
-    
-        # close the connection
-        client.close()
-
-    if __name__ == '__main__':
-        main()
-    ```
-
-1. Let's go ahead and save the Python program.  Select on the Upper right hand corner of the code editor and select **Save** (or Ctrl+S). Now select **Close Editor** (or Ctrl+Q) to go back to the Shell.
-
-1. Let's now run the Python App with the following command.
-
-    ```bash
-    python App.py
-    ```  
-
-1. This should return a similar result to the one below.  This means that we created the database, collection and added an item to it.
-
-    ```json
-    {'_id': ObjectId('62afecc3a04e32b92451ac5d'), 'ProductId': 1, 'name': 'bread'}
-    ```
-
-As you should have noticed, this code is the same code you would run to create a database, collection and item on a MongoDB database. So programming for Azure Cosmos DB API for MongoDB should be transparent to you if you're already familiar with creating apps that connect to MongoDB.
-
-## Using extension commands to manage data stored in Azure Cosmos DB’s API for MongoDB
-
-While the code above, except for the connection string, would be identical between connecting to a MongoDB Server then connection to our Azure Cosmos DB API for MongoDB account, this might not take advantage of Azure Cosmos DB features. What this means is using the default driver methods to create our collections, will also use the default Azure Cosmos DB Account parameters  to create those collections. So we won't be able to define creation parameters like our throughput, sharding key or autoscaling settings using those methods.
-
-By using the Azure Cosmos DB’s API for MongoDB, you can enjoy the benefits of Cosmos DB such as global distribution, automatic sharding, high availability, latency guarantees, automatic, encryption at rest, backups, and many more, while preserving your investments in your MongoDB app. You can communicate with the Azure Cosmos DB’s API for MongoDB by using any of the open-source MongoDB client drivers. The Azure Cosmos DB’s API for MongoDB enables the use of existing client drivers by adhering to the MongoDB wire protocol.
-
-Let's create some code that will allow us to create a collection and define its sharding key and throughput.
-
-1. In not already opened, open the Azure Cloud Shell.
-
-1. Run the following command to open the code editor.
-
-    ```bash
-    cd ~/mslearn-cosmosdb/api-for-mongodb/01-create-mongodb-objects/python
-    code App.py
-    ```
-
-1. Copy the following code and *replace the existing content* from the app.cs file. *Don't forget that you'll need to replace the uri value for the connection string copied in step 2 of the previous section*. This part of the code uses the MongoDB drivers and uses the connection string to Azure Cosmos DB like you would normally use a connection string to any MongoDB server.  The code then defines and opens the connection to the Azure Cosmos DB account.
-
-    ```python
-    # Use the MongoDB drivers
-    import pymongo
-    
-    def main():
-        # Replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB
-        # account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-        # Or replace it with the connection string if you have it.
-        uri = "mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@"
-        
-        # We use the "MongoClient" method and the "uri" value to connect to the account 
-        client = pymongo.MongoClient(uri)
-        
-    ```
-
-1. The next step connects to the **employees** database. Note that if this database doesn't exist it will create it only if also creates a collection in the same connection or by using extension commands. Add the following to the script in the editor.
-
-    ```python
-        # connect to the database "HumanResources"
-        EmployeeDatabase = client["HumanResources"]
-        
-    ```
-
-1. So far it looks pretty much like the code in the previous section. In this step, we'll now take advantage of the extension commands and create a custom action.  This action will allow us to define the throughput and the sharding key of the collection, which will in turn give Azure Cosmos DB the parameters to use when creating the collection. Add the following to the script in the editor.
-
-    ```python
-        # create the Employee collection with a throughput of 1000 RUs and with EmployeeId as the sharding key
-        EmployeeDatabase.command({'customAction': "CreateCollection", 'collection': "Employee", 'offerThroughput': 1000, 'shardKey': "EmployeeId"})
-    
-    ```
-
-1. The rest will be pretty identical to the previous example, we will connect to the collection, insert some rows,  finally query and output a row back. Add the following to the script in the editor.
-
-    ```python
-        # Connect to the collection "Employee" and add two items for "Marcos" and "Tam"
-        collection = EmployeeDatabase["Employee"]
-        collection.insert_one({ "EmployeeId": 1, "email": "Marcos@fabrikan.com", "name": "Marcos" })
-        collection.insert_one({ "EmployeeId": 2, "email": "Tam@fabrikan.com", "name": "Tam" })
-        
-        # return data where ProductId = 1
-        Product_1 = collection.find_one({"EmployeeId": 1})
-        
-        print(Product_1)
-    
-        # close the connection
-        client.close()
-
-    if __name__ == '__main__':
-        main()
-    ```
-
-1. The script should look like this:
-
-    ```python
-    # Use the MongoDB drivers
-    import pymongo
-    
-    def main():
-        # Replace below "YourAzureCosmosDBAccount" with the name of your Azure Cosmos DB
-        # account name and "YourAzureCosmosDBAccountKEY" with the Azure Cosmos DB account key.
-        # Or replace it with the connection string if you have it.
-        uri = "mongodb://YourAzureCosmosDBAccount:YourAzureCosmosDBAccountKEY@YourAzureCosmosDBAccount.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@YourAzureCosmosDBAccount@"
-        
-        # We use the "MongoClient" method and the "uri" value to connect to the account 
-        client = pymongo.MongoClient(uri)
-        
-        # connect to the database "HumanResources"
-        EmployeeDatabase = client["HumanResources"]
-        
-        # create the Employee collection with a throughput of 1000 RUs and with EmployeeId as the sharding key
-        EmployeeDatabase.command({'customAction': "CreateCollection", 'collection': "Employee", 'offerThroughput': 1000, 'shardKey': "EmployeeId"})
-    
-        # Connect to the collection "Employee" and add two items for "Marcos" and "Tam"
-        collection = EmployeeDatabase["Employee"]
-        collection.insert_one({ "EmployeeId": 1, "email": "Marcos@fabrikan.com", "name": "Marcos" })
-        collection.insert_one({ "EmployeeId": 2, "email": "Tam@fabrikan.com", "name": "Tam" })
-        
-        # return data where ProductId = 1
-        Product_1 = collection.find_one({"EmployeeId": 1})
-        
-        print(Product_1)
-    
-        # close the connection
-        client.close()
-
-    if __name__ == '__main__':
-        main()
-    ```
-
-1. Let's go ahead and save the Python program.  Select on the Upper right hand corner of the code editor and select **Save** (or Ctrl+S). Now select **Close Editor** (or Ctrl+Q) to go back to the Shell.
-
-1. Let's now run the Python App with the following command.
-
-    ```bash
-    python App.py
-    ```  
-
-1. This should return a similar result to the one below. This means that we created the database, collection and added an item to it.
-
-    ```json
-    {'_id': ObjectId('62afecc3a04e32b92451ac5d'), 'EmployeeId': 1, 'email': 'Marcos@fabrikan.com', 'name': 'Marcos'}
-    ```
-
-1. However this last result set only confirmed that we indeed created a database, collection and items, but what about our shard key and throughput, did they really change? On the Cloud Shell let's run the following commands to verify our changes took effect.
-
-    1. Let's verify that our Shard key changed to ***EmployeeId*** (the default is *id*).  *Don't forget to change the ***resource group name*** and ***account name*** for the names we saved at the beginning of this lab.*
-
-        ```bash
-        az cosmosdb mongodb collection show --name Employee --database-name HumanResources --resource-group learn-20c8df29-1419-49f3-84bb-6613f052b5ae --account-name learn-account-cosmos-845083734
-        ```
-
-        The result should include the property **"shardKey": {"EmployeeId": "Hash"}**.
-
-    1. Let's verify that our Throughput changed to ***1000*** (the default is *400*).  *Don't forget to change the ***resource group name*** and ***account name*** for the names we saved at the beginning of this lab.*
-
-        ```bash
-        az cosmosdb mongodb collection throughput show --name Employee --database-name HumanResources --resource-group learn-20c8df29-1419-49f3-84bb-6613f052b5ae --account-name learn-account-cosmos-845083734
-        ```
-
-        The result should include the property **"throughput": 1000**.
-
-This code illustrated the power of using extended commands in our code, which allows us to define the Azure Cosmos DB creation parameters.  This allows us to take advantage of controlling how our collections will be created and processed by Azure Cosmos DB.
+As with most database systems, having the proper indexing, optimizes the execution of our queries and significantly reduces cost. We have also introduced aggregation pipelines that have allowed us to create complex queries with ease. And while those pipelines could have a high cost to execute, again, with the proper indexing structure, you can also drastically reduce the aggregation pipeline costs.
