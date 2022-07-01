@@ -15,7 +15,7 @@ ServerVersion="4.0"
 let "randomIdentifier=$RANDOM*$RANDOM"
 location=$(az group list --query [].location --output tsv)
 account="learn-account-cosmos-$randomIdentifier"
-storageAccount = "learn-cosmos-$randomIdentifier"
+storageAccount="learncosmos$randomIdentifier"
 
 # Create a Cosmos account for MongoDB API
 echo "Creating $account"
@@ -30,9 +30,9 @@ az cosmosdb create \
 
 # Create storage account and container
 az storage account create \
-  --name "$storageAccount" \
-  --resource-group "$ResourceGroup" \
-  --location ""$location"" \
+  --name $storageAccount \
+  --resource-group $ResourceGroup \
+  --location "$location" \
   --sku Standard_RAGRS \
   --kind StorageV2
 
