@@ -1,9 +1,11 @@
 ResourceGroupParameter=""
+LocationParameter=""
 
-while getopts r: flag
+while getopts r:l: flag
 do
     case "${flag}" in
         r) ResourceGroupParameter=${OPTARG};;
+        l) LocationParameter=${OPTARG};;
     esac
 done
 
@@ -16,25 +18,48 @@ mv cosmic-works-v1 database-v1
 mv cosmic-works-v2 database-v2
 mv cosmic-works-v3 database-v3
 mv cosmic-works-v4 database-v4
-cd $GitRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms
+cd ..
 
 # Create a MongoDB API account
 
 # Variable block
-if [[$ResourceGroupParameter -eq ""]]
-then
-  ResourceGroup=$(az group list --query [].name --output tsv)
-else
-  ResourceGroup=$ResourceGroupParameter
-fi
-ServerVersion="4.0"
 let "randomIdentifier=$RANDOM*$RANDOM"
-location=$(az group list --query [].location --output tsv)
+
+if [[ "$LocationParameter" == "" ]]
+then
+#  location=$(az account list-locations --query "[$(( ( RANDOM % 20) + 1 ))].name" -o tsv)
+  locationarray=("eastus" "eastus2" "centralus" "westus" "westus2")
+  location="${locationarray[ ( $RANDOM % 5) ]}"
+else
+  location="$LocationParameter"
+fi
+
+if [[ "$ResourceGroupParameter" == "" ]]
+then
+  ResourceGroup="cosmos-learn-$randomIdentifier"
+  echo
+  echo "Creating Resource Group - $ResourceGroup"
+  echo
+  az group create --location $location --name $ResourceGroup
+else
+  ResourceGroup="$ResourceGroupParameter"
+  if [[ $LocationParameter == "" ]]
+  then
+    location=$(az group list --query "[?name=='$ResourceGroup'].location" --output tsv)
+#    locationarray=("eastus" "eastus2" "centralus" "westus" "westus2")
+#    location="${locationarray[ ( $RANDOM % 5) ]}"
+  fi
+fi
+
+ServerVersion="4.0"
 account="learn-account-cosmos-$randomIdentifier"
 storageAccount="learncosmos$randomIdentifier"
 
 # Create a Cosmos account for MongoDB API
-echo "Creating $account"
+echo
+echo "Creating Azure CosmoDB account - $account"
+echo
+
 az cosmosdb create \
     --name $account \
     --resource-group $ResourceGroup \
@@ -45,16 +70,39 @@ az cosmosdb create \
     --locations regionName="$location"
 
 # Create storage account and container
-az storage account create \
-  --name $storageAccount \
-  --resource-group $ResourceGroup \
-  --location "$location" \
-  --sku Standard_RAGRS \
-  --kind StorageV2
+echo
+echo "Creating Azure Storage account - $account"
+echo
 
-key=$(az storage account keys list -g  "$ResourceGroup" -n "$storageAccount" --query [0].value -o tsv)
+az storage account create --name $storageAccount --resource-group $ResourceGroup --location "$location" --sku Standard_RAGRS --kind StorageV2
+
+storageaccountkey=$(az storage account keys list -g  "$ResourceGroup" -n "$storageAccount" --query [0].value -o tsv)
 
 az storage container create --name mongodbbackupdirectory --account-name  $storageAccount --account-key $key
+
+#echo
+#echo "Upgrage storage extension if needed"
+#echo
+
+#az extension add --upgrade -n storage-preview
+
+echo
+echo "Copy backup files to Storage Account"
+echo
+
+
+sasurl=https://$storageAccount.blob.core.windows.net/mongodbbackupdirectory?$(az storage container generate-sas \
+    --account-name $storageAccount \
+    --name mongodbbackupdirectory \
+    --permissions acdlrw \
+    --expiry $(date +%Y-%m-%dT%H:%M:%SZ -ud "$date + 1 day") \
+    --auth-mode key \
+    --account-key $storageaccountkey)
+
+sasurl="${sasurl//\"/}"
+
+./azcopy copy "./data/database-v*" "$sasurl" --recursive=true
+
 
 # Get connection string
 ConnectionString=$(az cosmosdb keys list --name $account --resource-group $ResourceGroup --type connection-strings --query connectionStrings[0].connectionString --output tsv)
