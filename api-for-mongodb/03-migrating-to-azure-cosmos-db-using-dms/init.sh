@@ -1,16 +1,32 @@
+ResourceGroupParameter=""
+
+while getopts r: flag
+do
+    case "${flag}" in
+        r) ResourceGroupParameter=${OPTARG};;
+    esac
+done
+
+GitRoot=$(pwd)
+
 # Unzip collections
-cd ~/mslearn-cosmosdb/data
+cd $GitRoot/data
 unzip cosmic-works.zip
 mv cosmic-works-v1 database-v1
 mv cosmic-works-v2 database-v2
 mv cosmic-works-v3 database-v3
 mv cosmic-works-v4 database-v4
-cd ~/mslearn-cosmosdb/api-for-mongodb/02-indexes-and-aggregation-pipelines
+cd $GitRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms
 
 # Create a MongoDB API account
 
 # Variable block
-ResourceGroup=$(az group list --query [].name --output tsv)
+if [[$ResourceGroupParameter -eq ""]]
+then
+  ResourceGroup=$(az group list --query [].name --output tsv)
+else
+  ResourceGroup=$ResourceGroupParameter
+fi
 ServerVersion="4.0"
 let "randomIdentifier=$RANDOM*$RANDOM"
 location=$(az group list --query [].location --output tsv)
@@ -38,9 +54,7 @@ az storage account create \
 
 key=$(az storage account keys list -g  "$ResourceGroup" -n "$storageAccount" --query [0].value -o tsv)
 
-az storage container create -n mongodbbackupdirectory \ 
-    --account-name  "$storageAccount" 
-    --account-key $key
+az storage container create --name mongodbbackupdirectory --account-name  $storageAccount --account-key $key
 
 # Get connection string
 ConnectionString=$(az cosmosdb keys list --name $account --resource-group $ResourceGroup --type connection-strings --query connectionStrings[0].connectionString --output tsv)
