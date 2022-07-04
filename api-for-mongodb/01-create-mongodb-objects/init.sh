@@ -1,11 +1,49 @@
 
+ResourceGroupParameter=""
+LocationParameter=""
+
+while getopts r:l: flag
+do
+    case "${flag}" in
+        r) ResourceGroupParameter=${OPTARG};;
+        l) LocationParameter=${OPTARG};;
+    esac
+done
+
+GitRoot=$(pwd)
 # Create a MongoDB API account
 
 # Variable block
-ResourceGroup=$(az group list --query [].name --output tsv)
-ServerVersion="4.0"
 let "randomIdentifier=$RANDOM*$RANDOM"
-location=$(az group list --query [].location --output tsv)
+
+if [[ "$LocationParameter" == "" ]]
+then
+#  location=$(az account list-locations --query "[$(( ( RANDOM % 20) + 1 ))].name" -o tsv)
+  locationarray=("eastus" "eastus2" "centralus" "westus" "westus2")
+  location="${locationarray[ ( $RANDOM % 5) ]}"
+else
+  location="$LocationParameter"
+fi
+
+if [[ "$ResourceGroupParameter" == "" ]]
+then
+#  ResourceGroup="cosmos-learn-$randomIdentifier"
+#  echo
+#  echo "Creating Resource Group - $ResourceGroup"
+#  echo
+#  az group create --location $location --name $ResourceGroup
+  ResourceGroup=$(az group list --query [0].name --output tsv)
+else
+  ResourceGroup="$ResourceGroupParameter"
+  if [[ $LocationParameter == "" ]]
+  then
+    location=$(az group list --query "[?name=='$ResourceGroup'].location" --output tsv)
+#    locationarray=("eastus" "eastus2" "centralus" "westus" "westus2")
+#    location="${locationarray[ ( $RANDOM % 5) ]}"
+  fi
+fi
+
+ServerVersion="4.0"
 account="learn-account-cosmos-$randomIdentifier"
 
 # Create a Cosmos account for MongoDB API
