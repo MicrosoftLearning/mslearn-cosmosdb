@@ -18,6 +18,8 @@ mv cosmic-works-v1 database-v1
 mv cosmic-works-v2 database-v2
 mv cosmic-works-v3 database-v3
 mv cosmic-works-v4 database-v4
+#cd $GitRoot/data/database-v1
+#for file in * ; do filename="${file%.*}" ;  mv "$file" "${filename}.json" ; done
 cd ..
 
 # Create a MongoDB API account
@@ -83,7 +85,6 @@ az storage container create --name mongodbbackupdirectory --account-name  $stora
 #echo
 #echo "Upgrage storage extension if needed"
 #echo
-
 #az extension add --upgrade -n storage-preview
 
 echo
@@ -99,10 +100,10 @@ sasurl=https://$storageAccount.blob.core.windows.net/mongodbbackupdirectory?$(az
     --auth-mode key \
     --account-key $storageaccountkey)
 
+#getting rid of the double quoutes insinde the string
 sasurl="${sasurl//\"/}"
 
 ./azcopy copy "./data/database-v*" "$sasurl" --recursive=true
-
 
 # Get connection string
 ConnectionString=$(az cosmosdb keys list --name $account --resource-group $ResourceGroup --type connection-strings --query connectionStrings[0].connectionString --output tsv)
