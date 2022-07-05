@@ -13,13 +13,7 @@ GitRoot=$(pwd)
 
 # Unzip collections
 cd $GitRoot/data
-unzip cosmic-works.zip
-mv cosmic-works-v1 database-v1
-mv cosmic-works-v2 database-v2
-mv cosmic-works-v3 database-v3
-mv cosmic-works-v4 database-v4
-#cd $GitRoot/data/database-v1
-#for file in * ; do filename="${file%.*}" ;  mv "$file" "${filename}.json" ; done
+unzip dump.zip
 cd ..
 
 # Create a MongoDB API account
@@ -103,14 +97,27 @@ sasurl=https://$storageAccount.blob.core.windows.net/mongodbbackupdirectory?$(az
 #getting rid of the double quoutes insinde the string
 sasurl="${sasurl//\"/}"
 
-./azcopy copy "./data/database-v*" "$sasurl" --recursive=true
+./azcopy copy "./data/dump/database-v*" "$sasurl" --recursive=true
 
 # Get connection string
 ConnectionString=$(az cosmosdb keys list --name $account --resource-group $ResourceGroup --type connection-strings --query connectionStrings[0].connectionString --output tsv)
 
+SubscriptionID=$(az account show --query "{ subscriptionid: id }"  -o tsv)
+
+SubscriptionName=$(az account show --query "{ name: name}"  -o tsv)
+
 #Displaying the Connection String, Account Name and Resource Group Name
 echo "***************** Storage Account name ********************"
 echo $storageAccount
+echo "***********************************************************"
+echo "******************** Subcription ID ***********************"
+echo $SubscriptionID
+echo "***********************************************************"
+echo "******************* Subcription Name **********************"
+echo $SubscriptionName
+echo "***********************************************************"
+echo "******************** Location Name ***********************"
+echo $location
 echo "***********************************************************"
 echo "**************  Cosmos DB Account name ********************"
 echo $account
