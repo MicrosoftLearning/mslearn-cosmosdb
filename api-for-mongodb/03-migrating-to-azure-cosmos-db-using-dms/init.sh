@@ -74,7 +74,7 @@ az storage account create --name $storageAccount --resource-group $ResourceGroup
 
 storageaccountkey=$(az storage account keys list -g  "$ResourceGroup" -n "$storageAccount" --query [0].value -o tsv)
 
-az storage container create --name mongodbbackupdirectory --account-name  $storageAccount --account-key $key
+az storage container create --name mongodbbackupdirectory --account-name  $storageAccount --account-key $storageaccountkey
 
 #echo
 #echo "Upgrage storage extension if needed"
