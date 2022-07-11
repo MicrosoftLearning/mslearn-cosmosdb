@@ -1,6 +1,6 @@
 ---
 lab:
-    title: 'Create MongoDB app using the Azure Cosmos DB API for MongoDB'
+    title: 'Indexes and aggregation pipelines'
     module: 'Module 2 - Design an Azure Cosmos DB API for MongoDB database'
 ---
 
