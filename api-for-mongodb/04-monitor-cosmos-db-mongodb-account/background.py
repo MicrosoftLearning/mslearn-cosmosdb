@@ -85,14 +85,14 @@ def load_collection(CosmosDBDatabase, CollectionName,DatabaseName):
 
     CosmosDBCollection.insert_many(CollectionFile)
 
-    background_work(CollectionName)
+    background_work(CosmosDBCollection)
 
         
-def background_work(CollectionName):
+def background_work(CosmosDBCollection):
     while 1==1:
-        CollectionName.find({"lastName": "Benson"})
+        CosmosDBCollection.find({"lastName": "Benson"})
         time.sleep(1)
-        CollectionName.find({"creationDate": {"$gte" : "2012-01-01T00:00:00Z"}})
+        CosmosDBCollection.find({"creationDate": {"$gte" : "2012-01-01T00:00:00Z"}})
         time.sleep(1)
 
 
