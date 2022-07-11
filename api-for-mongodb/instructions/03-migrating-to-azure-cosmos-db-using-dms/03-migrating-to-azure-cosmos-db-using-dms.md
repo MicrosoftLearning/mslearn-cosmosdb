@@ -1,6 +1,6 @@
 ---
 lab:
-    title: 'Create MongoDB app using the Azure Cosmos DB API for MongoDB'
+    title: 'Migrate from MongoDB to Azure Cosmos DB with Azure DMS'
     module: 'Module 3 - Migrate a MongoDB database to Azure Cosmos DB'
 ---
 
