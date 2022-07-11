@@ -266,7 +266,7 @@ The insight reports give you an overview of the current state of your Azure Cosm
 Our final subject will be to run a few queries against the Azure diagnostic logs.  These queries can really dig into your diagnostic data to uncover any issues that might be having.  You can feed alerts or export the logs to other tools for further analysis.  Let's take a look at a few scenarios.
 
 > [!NOTE]
-> To take advantage of Azure diagnostic logs stored in Log Analytics, you will need to be familiar with the Kusto Query Language (KQL). To learn more about Kusto and its queries, see the [Kusto Query Language (KQL) overview](/azure/data-explorer/kusto/query/) article.
+> To take advantage of Azure diagnostic logs stored in Log Analytics, you will need to be familiar with the Kusto Query Language (KQL). To learn more about Kusto and its queries, see the [Kusto Query Language (KQL) overview](https://docs.microsoft.com/azure/data-explorer/kusto/query/) article.
 
 1. On the Azure portal, go to the Azure Cosmos DB page.
 
@@ -333,4 +333,4 @@ Our final subject will be to run a few queries against the Azure diagnostic logs
 
     These examples are just the tip of the iceberg of what queries can be run against the Azure Cosmos DB API for MongoDB tables.
 
-In this exercise, we were able to monitor Azure Cosmos DB using Azure Monitor, Azure Cosmos DB Insights and Azure Diagnostic logs. To learn more on the Azure Monitor, see the [Azure Monitor overview](/azure/azure-monitor/overview) article.
+In this exercise, we were able to monitor Azure Cosmos DB using Azure Monitor, Azure Cosmos DB Insights and Azure Diagnostic logs. To learn more on the Azure Monitor, see the [Azure Monitor overview](https://docs.microsoft.com/azure/azure-monitor/overview) article.
