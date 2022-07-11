@@ -28,8 +28,10 @@ let "randomIdentifier=$RANDOM*$RANDOM"
 if [[ "$LocationParameter" == "" ]]
 then
 #  location=$(az account list-locations --query "[$(( ( RANDOM % 20) + 1 ))].name" -o tsv)
-  locationarray=("eastus" "eastus2" "centralus" "westus" "westus2")
-  location="${locationarray[ ( $RANDOM % 5) ]}"
+#  locationarray=("eastus" "eastus2" "centralus" "westus" "westus2")
+#  location="${locationarray[ ( $RANDOM % 5) ]}"
+  locationarray=("eastus" "eastus2" "centralus" "westus")
+  location="${locationarray[ ( $RANDOM % 4) ]}"
 else
   location="$LocationParameter"
 fi
