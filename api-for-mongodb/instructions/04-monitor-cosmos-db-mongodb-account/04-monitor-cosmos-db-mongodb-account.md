@@ -22,7 +22,7 @@ If you haven't already prepared the Azure Cosmos DB account and environment wher
         # Create an Azure Cosmos DB API for MongoDB account and add the customer collection
         git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
         GitRepositoryRoot=$(pwd)
-        bash $GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account/init.sh
+        bash "$GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account/init.sh"
         ```
 
     1. If you already have a resource group you want to use in your environment, replace the string ***YOURRESOURCEGROUPNAMEHERE*** below for the name of your resource group. *If you aren't using the Sandbox, you'll need to run the ***az login*** command before running the ***init*** bash script below*.
@@ -32,7 +32,7 @@ If you haven't already prepared the Azure Cosmos DB account and environment wher
         git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
         GitRepositoryRoot=$(pwd)
         # Replace YOURRESOURCEGROUPNAMEHERE for the name of your Resource Group
-        bash $GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account/init.sh -r YOURRESOURCEGROUPNAMEHERE
+        bash "$GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account/init.sh" -r YOURRESOURCEGROUPNAMEHERE
         ```
 
     > [!Tip]
@@ -132,7 +132,7 @@ We'll now try to reload our customer JSON collection that has 19-K documents. Th
 
     ConnectionString="mongodb://learn-account-cosmos-137710230:5zJTfXk3p6grzYt76wFT3Jb1751bd8hWEsJn4FFrhANTRuAiSZFq4tRArjLHt2rUgXv402KN51cbJgSMLUyk0w==@learn-account-cosmos-137710230.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@learn-account-cosmos-137710230@"
     
-    cd $GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account
+    cd "$GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account"
 
     python ./load-data2.py -d database-v1 -c customer -cs $ConnectionString
     ```
@@ -163,7 +163,7 @@ Finally, we'll run a script to create a background workload.
     ```bash
     ConnectionString="mongodb://learn-account-cosmos-137710230:5zJTfXk3p6grzYt76wFT3Jb1751bd8hWEsJn4FFrhANTRuAiSZFq4tRArjLHt2rUgXv402KN51cbJgSMLUyk0w==@learn-account-cosmos-137710230.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@learn-account-cosmos-137710230@"
         
-    cd $GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account
+    cd "$GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account"
     
     python ./background.py -d database-v1 -c customer -cs $ConnectionString
     ```
