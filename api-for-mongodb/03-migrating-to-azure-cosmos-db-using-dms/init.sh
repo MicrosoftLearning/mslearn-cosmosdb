@@ -12,7 +12,7 @@ done
 GitRoot=$(pwd)
 
 # Unzip collections
-cd $GitRoot/data
+cd "$GitRoot/data"
 unzip dump.zip
 cd ..
 
