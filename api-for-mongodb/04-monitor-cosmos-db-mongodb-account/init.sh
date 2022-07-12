@@ -12,13 +12,13 @@ done
 GitRoot=$(pwd)
 
 # Unzip collections
-cd $GitRoot/mslearn-cosmosdb/data
+cd "$GitRoot/mslearn-cosmosdb/data"
 unzip cosmic-works.zip
 mv cosmic-works-v1 database-v1
 mv cosmic-works-v2 database-v2
 mv cosmic-works-v3 database-v3
 mv cosmic-works-v4 database-v4
-cd $GitRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account
+cd "$GitRoot/mslearn-cosmosdb/api-for-mongodb/04-monitor-cosmos-db-mongodb-account"
 
 # Create a MongoDB API account
 
