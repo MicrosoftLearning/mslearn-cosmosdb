@@ -99,20 +99,20 @@ We'll run a script that will create the Azure storage and Azure Cosmos DB accoun
         
         # Create an Azure Cosmos DB API for MongoDB account and add the customer collection
         # replace YOURRESOURCGROUPNAMEHERE with your Resource Group Name 
-        bash $GitRepositoryRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms/init.sh -r YOURRESOURCEGROUPNAMEHERE
+        bash "$GitRepositoryRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms/init.sh" -r YOURRESOURCEGROUPNAMEHERE
         ```
 
     1. If you want the script to create a resource group for you, run the following script. *This script will open a browser window to sign in to your Azure account.*
 
         ```bash
         GitRepositoryRoot=$(pwd)
-        cd $GitRepositoryRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms
+        cd "$GitRepositoryRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms"
         # Open a browser window to login to Azure, once you are logged in,
         # close the browser window and continue running the script.
         az login
         
         # Create an Azure Cosmos DB API for MongoDB account and add the customer collection
-        bash $GitRepositoryRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms/init.sh
+        bash "$GitRepositoryRoot/api-for-mongodb/03-migrating-to-azure-cosmos-db-using-dms/init.sh"
         ```
 
         > [!Tip]
