@@ -14,14 +14,29 @@ If you haven't already prepared the Azure Cosmos DB account and environment wher
 
 1. In Azure Cloud Shell, copy and paste the following commands.
 
-    ```bash
-    # Create an Azure Cosmos DB API for MongoDB account and add the customer collection
-    git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
-    cd ~/mslearn-cosmosdb/api-for-mongodb/02-indexes-and-aggregation-pipelines
-    bash init.sh
-    ```
+    1. *If you are using the Sandbox*, a resource group has already been created for you so run the following script.
 
-    > [!NOTE] 
+        ```bash
+        # Create an Azure Cosmos DB API for MongoDB account and add the customer collection
+        git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
+        GitRepositoryRoot=$(pwd)
+        bash "$GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/02-indexes-and-aggregation-pipelines/init.sh"
+        ```
+
+    1. If you already have a resource group you want to use in your environment, replace the string ***YOURRESOURCEGROUPNAMEHERE*** below for the name of your resource group. *If you are not using the Sandbox, you will need to run the ***az login*** command before running the ***init*** bash script below*.
+
+        ```bash
+        # Create an Azure Cosmos DB API for MongoDB account and add the customer collection
+        git clone https://github.com/MicrosoftLearning/mslearn-cosmosdb.git
+        GitRepositoryRoot=$(pwd)
+        # Replace YOURRESOURCEGROUPNAMEHERE for the name of your Resource Group
+        bash "$GitRepositoryRoot/mslearn-cosmosdb/api-for-mongodb/02-indexes-and-aggregation-pipelines/init.sh" -r YOURRESOURCEGROUPNAMEHERE
+        ```
+
+    > [!Tip]
+    > If you want to specify the location where you would like to create your database and storage objects, add a ***-l LOCATIONNAME*** parameter to the *init.sh* call.
+
+    > [!NOTE]
     > This bash script will create the Azure Cosmos DB API for MongoDB account and copy the customer collection into that account. *It can take 5-10 minutes to create this account* so it might be a good time to get a cup of coffee or tea.
 
 1. Since we'll be using the Azure portal with the Sandbox, don't forget to switch the directory on the Azure portal to use the Resource Group created by the Sandbox.
@@ -31,11 +46,14 @@ If you haven't already prepared the Azure Cosmos DB account and environment wher
 1. On the upper right hand corner of the Azure portal, verify the directory you're logged in to, if it points to the **Default Directory** or something different than the **Microsoft Learn Sandbox** directory continue to the next step, otherwise continue to the next section.
 
 1. Select the user icon on the upper right hand corner besides your sign-in name.  Select **Switch Directory**.
-    [![Diagram showing the switch directory option](../media/5-switch-directory-login.png)](../media/5-switch-directory-login.png#lightbox)
+
+    > [!div class="mx-imgBorder"]
+    > [![Screenshot showing the switch directory option.](../media/5-switch-directory-login.png)](../media/5-switch-directory-login.png#lightbox)
 
 1. Select the **Switch** button.  You'll notice in the upper right hand corner that you should now be in the Microsoft Learn Sandbox directory.
 
-    [![Diagram showing the switch directory option](../media/5-switch-directory.png)](../media/5-switch-directory.png#lightbox)
+    > [!div class="mx-imgBorder"]
+    > [![Screenshot showing the switch button.](../media/5-switch-directory.png)](../media/5-switch-directory.png#lightbox)
 
 Let's continue with the lab.  
 
